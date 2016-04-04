@@ -1,3 +1,4 @@
+#include "funcoesBomber.h"
 #include <stdio.h>
 #define RST "\e[m"
 #define VRD "\033[1;32m"	//Verde
@@ -7,6 +8,22 @@
 #define M 10			//Tamanho MxM
 #define B 5			//Num minas
 
+void jogo(){
+	char campo[M][M];
+	int minas[M][M];
+	int verifica[M][M];
+	int i, j;
+	for(i=0; i<M; i++){
+		for(j=0; j<M; j++){
+			campo[i][j] = '#';
+			minas[i][j] = 0;
+			verifica[i][j] = 0;
+		}
+	}
+	system("clear");
+	geraM(minas);
+	mostraCampo(minas, campo);
+}
 
 
 int menuOpcoes(){
@@ -21,16 +38,24 @@ int menuOpcoes(){
 	do{
 		printf("Informe a Opção: ");
 		scanf("%d", &opcao);
-		if(opcao != 1 && opcao != 2 && opcao != 3)
-			printf("Opção Inválida\n");
+		switch (opcao)
+		{
+			case 1: jogo();  return opcao; break;
+			case 2: return 0; return opcao; break;
+			case 3: imprimeRecord(); return opcao; break;
+			default: system("clear"); printf("\nPor favor, selecione uma opção válida\n"); menuOpcoes();  break;
+		}
+
 		}
 	while(opcao != 1 && opcao != 2 && opcao != 3);
 
 	return opcao;
 
 }
+
+
 void geraM(int minas[M][M]){
-	int i, j, x, y;
+	int x, y, i;
 	srand(time(NULL));
 	for(i=0; i<B; i++){
 		x=0; y=0;
@@ -39,6 +64,7 @@ void geraM(int minas[M][M]){
 			y=rand() % M;
 		}
 		minas[x][y]=8;
+
 
 			if(x < (M-1)){
 				minas[x+1][y]++;
@@ -65,7 +91,7 @@ void geraM(int minas[M][M]){
 }
 
 void geraRecord(int ponto){
-	int i;
+
 	FILE *p;
 	char nome[5];
 	p=fopen("record.txt", "a+");
@@ -79,7 +105,6 @@ void geraRecord(int ponto){
 	system("clear");
 	main();
 }
-
 
 void  mostraFim(int minas[M][M], int ponto){
 	int i, j, cont=0, op=0, v;
@@ -108,10 +133,10 @@ void  mostraFim(int minas[M][M], int ponto){
 		printf("\n");
 	}
 	while(op != 1 && op !=2 && op!=3){
-		if(v = 0){
+		if((v = 0)){
 			printf("%sPontos: %d - %sLOSER!%s\n", AZL, ponto, VML, RST);
 		}
-		if(v = 1){
+		if((v = 1)){
 			printf("%sPontos: %d - %sWINNER!%s\n", AZL, ponto, VML, RST);
 		}
 		printf(PRT" _______________________\n"RST);
@@ -167,6 +192,7 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 				printf("%d ", cont);
 				cont++;
 			}
+
 			printf("\n");
 			cont=0;
 			for(i=0 ; i<M; i++){
@@ -331,31 +357,15 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 
 	}
 
-	if(p=-1){
+	if((p=-1)){
 		mostraFim(minas, pontuacao);
 	}
 }
 
-void jogo(){
-	char campo[M][M];
-	int minas[M][M];
-	int verifica[M][M];
-	int i, j, x, y;
-	for(i=0; i<M; i++){
-		for(j=0; j<M; j++){
-			campo[i][j] = '#';
-			minas[i][j] = 0;
-			verifica[i][j] = 0;
-		}
-	}
-	system("clear");
-	geraM(minas);
-	mostraCampo(minas, campo);
-}
 
 void imprimeRecord(){
 	FILE *p;
-	char c, m;
+	char m;
 	int i, j, k=0, op=0;
 	int maior[2];
 	struct records{
@@ -416,11 +426,14 @@ int main(){
 	system("clear");
 	int opcao;
 	opcao = menuOpcoes();
-	if(opcao==1)
-		jogo();
-	else if(opcao==2)
-		return 0;
-	else
-		imprimeRecord();
+
+/*	switch (opcao)
+	{
+		case 1: jogo(); break;
+		case 2: return 0; break;
+		case 3: imprimeRecord(); break;
+		default: system("clear"); printf("Por favor, selecione uma opção válida\n"); menuOpcoes();  break;
+	}*/
+
 	return 0;
 }

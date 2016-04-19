@@ -4,7 +4,7 @@
 int M = 10;		//Tamanho do campo (M x M)
 int B = 5;		//Numero de bombas
 
-void jogo(){
+void jogo()
 	char campo[M][M];
 	int minas[M][M];
 	int verifica[M][M];

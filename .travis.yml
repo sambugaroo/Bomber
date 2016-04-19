@@ -1,9 +1,9 @@
 language: c
 sudo: false # only for faster builds
 script:
-  - clang -coverage -O0 bomber.c -o bomber
-  - gcov -c bomber.c main.c
-  - gcov -o bomber main.o bomber.o
+  - clang -c main.c bomber.c
+  - clang -o bomber main.o bomber.o
+
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

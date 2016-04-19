@@ -1,2 +1,2 @@
 bomber: bomber.c
-     gcc bomber.c -o bomber 
+	gcc bomber.c -o bomber 

@@ -3,6 +3,8 @@
 
 int M = 10;		//Tamanho do campo (M x M)
 int B = 5;		//Numero de bombas
+int v = 0;
+
 
 void jogo(){
 	char campo[M][M];
@@ -94,8 +96,8 @@ void geraRecord(int ponto){
 		end();
 	}
 	printf("Nick (5 Caracter): ");
-	scanf("", nome);
-	fprintf(p, " %d\n", nome, ponto);
+	scanf("%s", nome);
+	fprintf(p, "%s %d\n", nome, ponto);
 	system("clear");
 	main();
 }
@@ -143,17 +145,23 @@ void  mostraFim(int minas[M][M], int ponto){
 		if(op != 1 && op != 2 && op != 3)
 			printf("Opção Inválida\n\n");
 	}
-	if(op==1){
+	switch (op) {
+		case 1: geraRecord(ponto); break;
+		case 2: system("clear"); main(); break;
+		case 3: return 0; break;
+		default: system("clear"); printf("\nPor favor, selecione uma opção válida\n"); menuOpcoes();  break;
+	}
+	/*if(op==1){
 		geraRecord(ponto);
 	}
 	if(op==2){
 		system("clear");
 		main();
-	}
+	}*/
 }
 
 void mostraCampo(int minas[M][M], char campo[M][M]){
-	int i, j, p=0, x, y, cont=0, vitoria, v;
+	int i, j, p=0, x, y, cont=0, vitoria;
 	int verifica[M][M];
 	int pontuacao=0;
 	printf("  ");
@@ -295,10 +303,10 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 						for(i=0; i<M; i++){
 							printf("%d ", cont);
 							cont++;
-							if(vitoria == ((M*M) - B)){
+							/*if(vitoria == ((M*M) - B)){
 								p = -1;
-								v = 1;
-							}
+								v = 0;
+							}*/
 						}
 						printf("\n");
 						cont=0;
@@ -340,10 +348,10 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 							}
 							printf("\n");
 							cont++;
-							if(vitoria == ((M*M) - B)){
+							/*if(vitoria == ((M*M) - B)){
 								p = -1;
 								v = 1;
-							}
+							}*/
 						}
 					}
 }
@@ -374,7 +382,7 @@ void imprimeRecord(){
 	}
 	while(!feof(p)){
 		for(i=0; i<5; i++)
-			fscanf(p, "%c", &vetor[k].nome[i]);
+		fscanf(p, "%c", &vetor[k].nome[i]);
 		fscanf(p, "%c", &vetor[k].nome[5]);
 		fscanf(p, "%d", &vetor[k].r);
 		fscanf(p, "%c", &m);
@@ -408,7 +416,7 @@ void imprimeRecord(){
 		printf("|\t1 - Menu\t|\n"  );
 		printf("|\t2 - Sair\t|\n"  );
 		printf("|_______________________|\n");
-		scanf("%d", &op);
+		scanf(" - %d", &op);
 	}
 	if(op==1){
 		system("clear");

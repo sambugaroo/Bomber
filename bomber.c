@@ -148,7 +148,7 @@ void  mostraFim(int minas[M][M], int ponto){
 	switch (op) {
 		case 1: geraRecord(ponto); break;
 		case 2: system("clear"); main(); break;
-		case 3: return 0; break;
+		case 3: 0; break;
 		default: system("clear"); printf("\nPor favor, selecione uma opção válida\n"); menuOpcoes();  break;
 	}
 	/*if(op==1){

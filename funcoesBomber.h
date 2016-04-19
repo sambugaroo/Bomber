@@ -3,9 +3,9 @@
 
 
 
-int main(); //função principal
+//int main(); //função principal
 
-char system( char j[6]);  //usar comandos no terminal
+//char system( char j[6]);  //usar comandos no terminal
 
 int srand(int funTime);   //geral semente aleatoria das minas
 

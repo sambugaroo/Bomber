@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include "funcoesBomber.h"
+
+
 
 int M = 10;		//Tamanho do campo (M x M)
 int B = 5;		//Numero de bombas
@@ -416,18 +416,18 @@ void imprimeRecord(){
 	}
 }
 
-int main(){
+/*int main(){
 	system("clear");
 	int opcao;
 	opcao = menuOpcoes();
 
-/*	switch (opcao)
+	switch (opcao)
 	{
 		case 1: jogo(); break;
 		case 2: return 0; break;
 		case 3: imprimeRecord(); break;
 		default: system("clear"); printf("Por favor, selecione uma opção válida\n"); menuOpcoes();  break;
-	}*/
+	}
 
 	return 0;
-}
+}*/

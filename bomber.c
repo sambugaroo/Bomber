@@ -33,55 +33,53 @@ int menuOpcoes(){
 	do{
 		printf("Informe a Opção: ");
 		scanf("%d", &opcao);
-		switch (opcao)
-		{
+		switch (opcao) {
 			case 1: jogo();  return opcao; break;
 			case 2: return 0; return opcao; break;
 			case 3: imprimeRecord(); return opcao; break;
 			default: system("clear"); printf("\nPor favor, selecione uma opção válida\n"); menuOpcoes();  break;
 		}
 
-		}
-	while(opcao != 1 && opcao != 2 && opcao != 3);
+	} while(opcao != 1 && opcao != 2 && opcao != 3);
 
 	return opcao;
-
 }
 
-
+// Insere as minas a matrirz M por M, e incrementa as adjacencias das minas.
 void geraM(int minas[M][M]){
 	int x, y, i;
 	srand(time(NULL));
-	for(i=0; i<B; i++){
+	for(i=0; i<B; i++) {
 		x=0; y=0;
 		while(x == y){
 			x=rand() % M;
 			y=rand() % M;
 		}
-		minas[x][y]=8;
-
-
-			if(x < (M-1)){
-				minas[x+1][y]++;
-				if(y < (M-1))
-					minas[x+1][y+1]++;
-				if(y != 0)
-					minas[x+1][y-1]++;
+		//**ACHO QUE FALTA FAZER A VERIFICAÇÂO SE A POSIÇÂO DA MINA (x,y) JÁ FOI UTILIZADA**//
+		
+		minas[x][y]=8; //Posição (x,y) recebe uma mina.
+			// Sequencia de IF's para incrementar as posição em volta da mina.
+			if(x < (M-1))			// Se a mina estiver fora da borda direita.
+				minas[x+1][y]++;		// Incremente a posição direita à mina.
+				if(y < (M-1))			// Se a mina estiver fora da borda inferior.
+					minas[x+1][y+1]++;		// Incremente a diagonal direita/inferior da mina.
+				if(y != 0)			// Se a mina estiver fora da borda superior.
+					minas[x+1][y-1]++;		// Incremente a diagonal direita/superior da mina.
 			}
 
-			if(x != 0){
-					minas[x-1][y]++;
-				if(y < (M-1))
-					minas[x-1][y+1]++;
-				if(y != 0)
-					minas[x-1][y-1]++;
+			if(x != 0){			// Se a mina estiver fora da borda esquerda.
+				minas[x-1][y]++;		// Incremete a posição esquerda à mina.
+				if(y < (M-1))			// Se a mina estiver fora da borda inferior.
+					minas[x-1][y+1]++;		// Incremente a diagonal esquerda/inferior da mina.
+				if(y != 0)			// Se a mina estiver fora da borda superior.
+					minas[x-1][y-1]++;		// Incremente a diagonal esqueda/superior da mina.
 			}
 
-			if(y < (M-1))
-				minas[x][y+1]++;
+			if(y < (M-1))			// Se a mina estiver fora da borda inferior.
+				minas[x][y+1]++;		// Incrementa a posição a baixo da mina.
 
-			if(y != 0)
-				minas[x][y-1]++;
+			if(y != 0)			// Se a mina estiver fora da borda superior.
+				minas[x][y-1]++;		// Incrementa a posição a cima da mina.
 	}
 }
 

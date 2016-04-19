@@ -1,2 +1,2 @@
 language: c 
-script: gcc bomber.c -W
+script: make

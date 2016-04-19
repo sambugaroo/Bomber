@@ -410,6 +410,7 @@ void imprimeRecord(){
 		printf("|_______________________|\n");
 		scanf("%d", &op);
 	}
+	
 	if(op==1){
 		system("clear");
 		main();

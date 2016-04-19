@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "funcoesBomber.h"
 
 int M = 10;		//Tamanho do campo (M x M)
 int B = 5;		//Numero de bombas

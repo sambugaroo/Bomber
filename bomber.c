@@ -56,10 +56,10 @@ void geraM(int minas[M][M]){
 			y=rand() % M;
 		}
 		//**ACHO QUE FALTA FAZER A VERIFICAÇÂO SE A POSIÇÂO DA MINA (x,y) JÁ FOI UTILIZADA**//
-		
+
 		minas[x][y]=8; //Posição (x,y) recebe uma mina.
 			// Sequencia de IF's para incrementar as posição em volta da mina.
-			if(x < (M-1))			// Se a mina estiver fora da borda direita.
+			if(x < (M-1)){			// Se a mina estiver fora da borda direita.
 				minas[x+1][y]++;		// Incremente a posição direita à mina.
 				if(y < (M-1))			// Se a mina estiver fora da borda inferior.
 					minas[x+1][y+1]++;		// Incremente a diagonal direita/inferior da mina.

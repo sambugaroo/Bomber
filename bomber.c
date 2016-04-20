@@ -398,8 +398,8 @@ void imprimeRecord(){
 	}
 	
 	int maior = 0; // Auxiliar para encontrar maior pontuação, inicializando com o primeiro jogador.
-	for(i=0; i<(k-1); i++){ // Percorrer a quantidade de jogadores lidos.
-		if(vetor[i].r > vetor[maior]){ // Se o jogador [i] for maior que o ultimo maior.
+	for(i=0; i<(k-1); i++) { // Percorrer a quantidade de jogadores lidos.
+		if(vetor[i].r > vetor[maior].r) { // Se o jogador [i] for maior que o ultimo maior.
 			maior = i; // Jogador [i] é o novo maior.
 		}
 	}

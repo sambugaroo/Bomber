@@ -366,51 +366,64 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 
 
 void imprimeRecord(){
-	FILE *p;
-	char m;
-	int i, j, k=0, op=0;
-	int maior[2];
-	struct records{
-		char nome[6];
-		int r;
-	};
-	struct records vetor[100];
-	p=fopen("record.txt", "r+");
-	if(p == NULL){
+	int i, j; // Variaveis auxiliares para laços de repetição.
+	
+	FILE *p; // Cria um ponteiro para um arquivo.
+	p=fopen("record.txt", "r+"); // Abre o arquivo record.txt com r (read) e + (update).
+	if(p == NULL){ // Se p receber null, não foi possivel ler o arquivo record.txt.
 		printf("Erro na Leitura do Arquivo\n");
 		end();
 	}
-	while(!feof(p)){
-		for(i=0; i<5; i++)
-		fscanf(p, "%c", &vetor[k].nome[i]);
-		fscanf(p, "%c", &vetor[k].nome[5]);
-		fscanf(p, "%d", &vetor[k].r);
-		fscanf(p, "%c", &m);
-		k++;
-	}
-	maior[0]=vetor[0].r;
-	maior[1]=0;
-	for(i=0; i<(k-1); i++){
-		if(vetor[i].r>maior[0]){
-			maior[0]=vetor[i].r;
-			maior[1]=i;
+	
+	struct records{ // Estrutura com nome e Pontuação r (record).
+		char nome[6];
+		int r;
+	};
+	struct records vetor[100]; // Vetor com 100 posiçoes de records (Nome e Pontuação).
+	
+	int k=0;
+	while(!feof(p)){ // While até chegar no final do arquivo. (End-Of-File)
+		for(i=0; i<5; i++) {  // 0 a 4 = 5 Caracteres para o Nome
+			fscanf(p, "%c", &vetor[k].nome[i]); // Lê o nome do Jogador k no arquivo (fscanf (file scanf)).
 		}
+		
+		fscanf(p, "%c", &vetor[k].nome[5]); // Lê o espaço entre o Nome e a Pontuação (Talvez hahah).
+		
+		fscanf(p, "%d", &vetor[k].r); // Lê a pontuação.
+		
+		char quebraDeLinha;
+		fscanf(p, "%c", &quebraDeLinha); // Lê a quebra de linha (Lixo).
+		
+		k++; // Incrementa para o proximo jogador.
+	}
+	
+	int maior = 0; // Auxiliar para encontrar maior pontuação, inicializando com o primeiro jogador.
+	for(i=0; i<(k-1); i++){ // Percorrer a quantidade de jogadores lidos.
+		if(vetor[i].r > vetor[maior]){ // Se o jogador [i] for maior que o ultimo maior.
+			maior = i; // Jogador [i] é o novo maior.
+		}
+	}
 
+	printf("\tTOP: " ); // Imprimir o jogador com a maior pontuação.
+	for(j=0; j<5; j++){ // For para imprimir o nome.
+		printf("%c", vetor[maior].nome[j]); 
 	}
-	printf("\tTOP: " );
-	for(j=0; j<5; j++){
-			printf("%c", vetor[maior[1]].nome[j]);
-	}
-	printf(" - %d", maior[0]);
+	printf(" - %d", vetor[maior].r); // Imrpimir a pontuação do TOP.
 	printf("\n");
-	for(i=0; i<(k-1); i++){
+	
+	for(i=0; i<(k-1); i++){ // Imprimir sequenciamente o Nome - Pontuação\n de todos os jogadores lidos.
 		for(j=0; j<5; j++){
 			printf("%c", vetor[i].nome[j]);
 		}
 		printf(" - %d", vetor[i].r);
 		printf("\n");
 	}
-	fclose(p);
+	
+	fclose(p); // Fecha o arquivo explicitamente para não haver erros.
+	
+	//** FIM DA LEITURA DE PONTUAÇÕES **//
+	
+	int op=0;
 	while(op != 1 && op != 2){
 		printf(" _______________________\n");
 		printf("|\t1 - Menu\t|\n"  );

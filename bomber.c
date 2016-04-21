@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "funcoesBomber.h"
 
 int M = 10;		//Tamanho do campo (M x M)
@@ -38,7 +39,7 @@ int menuOpcoes(){
 		scanf("%d", &opcao);
 		switch (opcao) {
 			case 1: jogo();  return opcao; break;
-			case 2: return 0; return opcao; break;
+			case 2: system("clear"); exit(0); return opcao; break;
 			case 3: imprimeRecord(); return opcao; break;
 			default: system("clear"); printf("\nPor favor, selecione uma opção válida\n"); menuOpcoes();  break;
 		}
@@ -148,16 +149,10 @@ void  mostraFim(int minas[M][M], int ponto){
 	switch (op) {
 		case 1: geraRecord(ponto); break;
 		case 2: system("clear"); main(); break;
-		case 3: 0; break;
+		case 3: system("clear"); exit(0); break;
 		default: system("clear"); printf("\nPor favor, selecione uma opção válida\n"); menuOpcoes();  break;
 	}
-	/*if(op==1){
-		geraRecord(ponto);
-	}
-	if(op==2){
-		system("clear");
-		main();
-	}*/
+
 }
 
 void mostraCampo(int minas[M][M], char campo[M][M]){
@@ -303,10 +298,7 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 						for(i=0; i<M; i++){
 							printf("%d ", cont);
 							cont++;
-							/*if(vitoria == ((M*M) - B)){
-								p = -1;
-								v = 0;
-							}*/
+
 						}
 						printf("\n");
 						cont=0;
@@ -348,10 +340,7 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 							}
 							printf("\n");
 							cont++;
-							/*if(vitoria == ((M*M) - B)){
-								p = -1;
-								v = 1;
-							}*/
+
 						}
 					}
 }
@@ -365,38 +354,39 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 }
 
 
-void imprimeRecord(){
+int imprimeRecord(){
+	system("clear");
 	int i, j; // Variaveis auxiliares para laços de repetição.
-	
+
 	FILE *p; // Cria um ponteiro para um arquivo.
 	p=fopen("record.txt", "r+"); // Abre o arquivo record.txt com r (read) e + (update).
 	if(p == NULL){ // Se p receber null, não foi possivel ler o arquivo record.txt.
 		printf("Erro na Leitura do Arquivo\n");
 		end();
 	}
-	
+
 	struct records{ // Estrutura com nome e Pontuação r (record).
-		char nome[6];
+		char nome[5];
 		int r;
 	};
 	struct records vetor[100]; // Vetor com 100 posiçoes de records (Nome e Pontuação).
-	
+
 	int k=0;
 	while(!feof(p)){ // While até chegar no final do arquivo. (End-Of-File)
-		for(i=0; i<5; i++) {  // 0 a 4 = 5 Caracteres para o Nome
+		for(i=0; i<5; i++){  // 0 a 4 = 5 Caracteres para o Nome
 			fscanf(p, "%c", &vetor[k].nome[i]); // Lê o nome do Jogador k no arquivo (fscanf (file scanf)).
 		}
-		
+
 		fscanf(p, "%c", &vetor[k].nome[5]); // Lê o espaço entre o Nome e a Pontuação (Talvez hahah).
-		
+
 		fscanf(p, "%d", &vetor[k].r); // Lê a pontuação.
-		
+
 		char quebraDeLinha;
 		fscanf(p, "%c", &quebraDeLinha); // Lê a quebra de linha (Lixo).
-		
+
 		k++; // Incrementa para o proximo jogador.
 	}
-	
+
 	int maior = 0; // Auxiliar para encontrar maior pontuação, inicializando com o primeiro jogador.
 	for(i=0; i<(k-1); i++) { // Percorrer a quantidade de jogadores lidos.
 		if(vetor[i].r > vetor[maior].r) { // Se o jogador [i] for maior que o ultimo maior.
@@ -406,11 +396,11 @@ void imprimeRecord(){
 
 	printf("\tTOP: " ); // Imprimir o jogador com a maior pontuação.
 	for(j=0; j<5; j++){ // For para imprimir o nome.
-		printf("%c", vetor[maior].nome[j]); 
+		printf("%c", vetor[maior].nome[j]);
 	}
 	printf(" - %d", vetor[maior].r); // Imrpimir a pontuação do TOP.
 	printf("\n");
-	
+
 	for(i=0; i<(k-1); i++){ // Imprimir sequenciamente o Nome - Pontuação\n de todos os jogadores lidos.
 		for(j=0; j<5; j++){
 			printf("%c", vetor[i].nome[j]);
@@ -418,37 +408,27 @@ void imprimeRecord(){
 		printf(" - %d", vetor[i].r);
 		printf("\n");
 	}
-	
+
 	fclose(p); // Fecha o arquivo explicitamente para não haver erros.
-	
+
 	//** FIM DA LEITURA DE PONTUAÇÕES **//
-	
+
 	int op=0;
-	while(op != 1 && op != 2){
+
+		printf("\n");
 		printf(" _______________________\n");
 		printf("|\t1 - Menu\t|\n"  );
 		printf("|\t2 - Sair\t|\n"  );
 		printf("|_______________________|\n");
-		scanf(" - %d", &op);
-	}
-	if(op==1){
-		system("clear");
-		main();
-	}
+
+		do{
+			printf("Informe a Opção: ");
+			scanf("%d", &op);
+			switch (op) {
+				case 1: system("clear"); main();  return op; break;
+				case 2: system("clear"); exit(0); return op; break;
+				default: printf("\nPor favor, selecione uma opção válida\n"); break;
+			}
+
+		} while(op != 1 || op != 2);
 }
-
-/*int main(){
-	system("clear");
-	int opcao;
-	opcao = menuOpcoes();
-
-	switch (opcao)
-	{
-		case 1: jogo(); break;
-		case 2: return 0; break;
-		case 3: imprimeRecord(); break;
-		default: system("clear"); printf("Por favor, selecione uma opção válida\n"); menuOpcoes();  break;
-	}
-
-	return 0;
-}*/

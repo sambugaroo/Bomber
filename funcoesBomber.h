@@ -3,11 +3,11 @@
 
 
 
-//int main(); //função principal
+int main(); //função principal
 
 //char system( char j[6]);  //usar comandos no terminal
 
-int srand(int funTime);   //geral semente aleatoria das minas
+//int srand(int Time);   //gera semente aleatoria das minas
 
 int time(char *aloka);   // não faço ideia
 
@@ -27,4 +27,4 @@ void geraRecord(int c);   //gera e grava o record do jogador
 
 void mostraFim(int a[z][w], int c);   //mostra a tela de fim de jogo e a pontuação do jogador
 
-void imprimeRecord();   //mostra na tela os records gravados
+int imprimeRecord();   //mostra na tela os records gravados

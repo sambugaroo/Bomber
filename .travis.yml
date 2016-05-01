@@ -1,7 +1,7 @@
 language: c
 sudo: false # only for faster builds
 script:
-  - clang -c main.c bomber.c
+  - clang -c bomber.c main.c
   - clang -o bomber main.o bomber.o
 
 

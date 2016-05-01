@@ -87,22 +87,7 @@ void geraM(int minas[M][M]){
 }
 
 void geraRecord(int ponto){
-<<<<<<< HEAD
 
-	FILE *p;
-
-	char nome[5];
-	//int checkName=0;
-	p=fopen("record.txt", "a+");
-	if(p == NULL){
-		printf("Erro na Leitura do Arquivo\n");
-		end();
-	}
-	printf("Nick (5 Caracter): ");
-	scanf("%c", &nome[5]);
-
-	fprintf(p, "%s %d\n", nome, ponto);
-=======
 	FILE *p;					// Cria ponteiro para arquivo.
 	char nome[5];					// Cria váriavel para armazenar o nome.
 	p=fopen("record.txt", "a+");			// Abre o arquivo record.txt com append (a) e update (+).
@@ -114,7 +99,6 @@ void geraRecord(int ponto){
 	scanf("%s", nome);				// Lê o nome digitado pelo usuário. Necessidade de verificar
 							// se segue o protocolo de 5 caracteres.
 	fprintf(p, "%s %d\n", nome, ponto);		// Escreve no arquivo: NOMEespaçoPONTUAÇÃO
->>>>>>> 887d5be2c0844f693305ebcc5e2b59bfaa1587c4
 	system("clear");
 	main();
 

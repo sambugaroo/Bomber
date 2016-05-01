@@ -4,8 +4,7 @@
 
 int M = 10;		//Tamanho do campo (M x M)
 int B = 5;		//Numero de bombas
-int v = 0;
-
+int vitoria = 0;
 
 void jogo(){
 	char campo[M][M];
@@ -90,17 +89,21 @@ void geraM(int minas[M][M]){
 void geraRecord(int ponto){
 
 	FILE *p;
+
 	char nome[5];
+	//int checkName=0;
 	p=fopen("record.txt", "a+");
 	if(p == NULL){
 		printf("Erro na Leitura do Arquivo\n");
 		end();
 	}
 	printf("Nick (5 Caracter): ");
-	scanf("%s", nome);
+	scanf("%c", &nome[5]);
+
 	fprintf(p, "%s %d\n", nome, ponto);
 	system("clear");
 	main();
+
 }
 
 void  mostraFim(int minas[M][M], int ponto){
@@ -130,11 +133,13 @@ void  mostraFim(int minas[M][M], int ponto){
 		printf("\n");
 	}
 	while(op != 1 && op !=2 && op!=3){
-		if((v = 0)){
-			printf("Pontos: %d - LOSER!\n", ponto );
+		if(vitoria != ((M*M)-B)){
+			printf("Pontos: %d - LOSER!\n %d", ponto, vitoria );
+			vitoria = 0;
 		}
-		if((v = 1)){
+		if(vitoria == ((M*M)-B)){
 			printf("Pontos: %d - WINNER!\n", ponto );
+			vitoria = 0;
 		}
 		printf(" _______________________\n");
 		printf("|1 - Gravar Record\t|\n"  );
@@ -156,7 +161,7 @@ void  mostraFim(int minas[M][M], int ponto){
 }
 
 void mostraCampo(int minas[M][M], char campo[M][M]){
-	int i, j, p=0, x, y, cont=0, vitoria;
+	int i, j, p=0, x, y, cont=0;
 	int verifica[M][M];
 	int pontuacao=0;
 	printf("  ");
@@ -166,7 +171,6 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 	}
 	printf("\n");
 	cont=0;
-	vitoria=0;
 	for(i=0 ; i<M; i++){
 		printf("%d ", cont);
 		for(j=0; j<M; j++){
@@ -176,9 +180,9 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 		cont++;
 		printf("\n");
 	}
-	while(p != -1){
+	while((p != -1)){
 		cont=0;
-		printf("Pontos: %d - ", pontuacao);
+		printf("Vitoria = %d\nPontos: %d - ", vitoria, pontuacao);
 		printf("Informe a jogada: ");
 		scanf("%d %d", &x, &y);
 		if ((x>(M-1) || x<0) || (y>(M-1) || y<0)){
@@ -202,7 +206,7 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 						}
 						else if(minas[i][j] != 0){
 							campo[i][j]=minas[i][j];
-							pontuacao +=2;
+							pontuacao += 2;
 							verifica[i][j] = 1;
 							vitoria++;
 						}
@@ -236,11 +240,11 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 						if (verifica[x][y] == 1) {
 						if (campo[x][y] == '0'){
 							pontuacao -= 1;
-							vitoria--;
+							vitoria -= 1;
 						}
 						if (minas[x][y] != 0){
 							pontuacao -= 2;
-							vitoria--;
+							vitoria -= 1;
 						}
 						system("clear");
 						printf("\nJogada já realizada!\n\n");
@@ -261,7 +265,7 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 									}
 									else if(minas[i][j] != 0){
 										campo[i][j]=minas[i][j];
-										pontuacao +=2;
+										pontuacao += 2;
 										verifica[i][j] = 1;
 										vitoria++;
 									}
@@ -298,8 +302,8 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 						for(i=0; i<M; i++){
 							printf("%d ", cont);
 							cont++;
-
 						}
+
 						printf("\n");
 						cont=0;
 						for(i=0 ; i<M; i++){
@@ -309,11 +313,10 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 									if(minas[i][j]>=8){
 										campo[i][j]='*';
 										p = -1;
-										v = 0;
 									}
 									else if(minas[i][j] != 0){
 										campo[i][j]=minas[i][j];
-										pontuacao +=2;
+										pontuacao += 2;
 										verifica[i][j] = 1;
 										vitoria++;
 									}
@@ -343,12 +346,14 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 
 						}
 					}
-}
+				}
+				if (vitoria == ((M*M)-B)){
+					p = -1;
+				}
 
 
 	}
-
-	if((p=-1)){
+	if((p = -1)){
 		mostraFim(minas, pontuacao);
 	}
 }

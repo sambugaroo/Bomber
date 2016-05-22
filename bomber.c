@@ -1,12 +1,53 @@
+//# -*- coding: UTF-8 -*-
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "funcoesBomber.h"
 
-int M = 10;		//Tamanho do campo (M x M)
-int B = 5;		//Numero de bombas
+int M = 0;		//Tamanho do campo (M x M)
+int B = 0;		//Numero de bombas
 int vitoria = 0;
+int categoria = 0;
 
 void jogo(){
+	system("clear");
+	int dificuldadeJogo = 0;
+	do{			//loop para escolher a dificuldade do jogo (de 1 a 10)
+		printf("\nSelecione a dificuldade do jogo\n");
+		printf("Escolha um grau de dificuldade de 1 a 10: ");
+		scanf("%d", &dificuldadeJogo);
+		if (dificuldadeJogo > 10 || dificuldadeJogo < 1){		//Verifica se a dificuldade escolhida é correta
+			system("clear");
+			printf("\n\nPor favor, selecione uma dificuldade válida!\n\n");
+		}
+	} while(dificuldadeJogo > 10 || dificuldadeJogo < 1);
+
+	M = dificuldadeJogo * 5;
+
+
+	float porcentMinasEasy = 0.10;
+	float porcentMinasMedium = 0.20;
+	float porcentMinasHard = 0.40;
+	float porcentMinasHiperHard = 0.70;
+
+	if(dificuldadeJogo < 3){
+		categoria = 1;
+		B = (M*M)*porcentMinasEasy;
+	}
+	else if(dificuldadeJogo <= 5){
+		categoria = 2;
+		B = (M*M)*porcentMinasMedium;
+	}
+	else if(dificuldadeJogo <= 8){
+		categoria = 3;
+		B = (M*M)*porcentMinasHard;
+	}
+	else{
+		categoria = 4;
+		B = (M*M)*porcentMinasHiperHard;
+	}
+
+
 	char campo[M][M];
 	int minas[M][M];
 	int verifica[M][M];
@@ -95,7 +136,7 @@ void geraRecord(int ponto){
 		printf("Erro na Leitura do Arquivo\n");
 		end();
 	}
-	printf("Nick (5 Caracter): ");			
+	printf("Nick (5 Caracter): ");
 	scanf("%s", nome);				// Lê o nome digitado pelo usuário. Necessidade de verificar
 							// se segue o protocolo de 5 caracteres.
 	fprintf(p, "%s %d\n", nome, ponto);		// Escreve no arquivo: NOMEespaçoPONTUAÇÃO
@@ -106,33 +147,55 @@ void geraRecord(int ponto){
 
 void  mostraFim(int minas[M][M], int ponto){
 	int i, j, cont=0, op=0, v;
+	int zero = 0;
 	system("clear");
-	printf("  ");
+	if (categoria == 1){
+		printf("\nCategoria %d - Easy\n", categoria);
+	} else if (categoria == 2){
+		printf("\nCategoria %d - Medium\n", categoria);
+	} else if(categoria == 3){
+		printf("\nCategoria %d - Hard\n", categoria);
+	} else{
+		printf("\nCategoria ??? - Hiper Hard (You are crazy...)\n");
+	}
+	printf("   ");
 	for(i=0; i<M; i++){
-		printf("%d ", cont);
-		cont++;
+		if (cont < 10){
+			printf("%d%d ", zero, cont);
+			cont++;
+		} else {
+			printf("%d ", cont);
+			cont++;
+		}
+
 	}
 	printf("\n");
 	cont=0;
 	for(i=0 ; i<M; i++){
-		printf("%d ", cont);
+		if (cont < 10){
+			printf("%d%d ", zero, cont);
+			cont++;
+		} else {
+			printf("%d ", cont);
+			cont++;
+		}
 		for(j=0; j<M; j++){
 			if(minas[i][j] == 0){
-				printf("%d ", minas[i][j]);
+				printf(" %d ", minas[i][j]);
 			}
 			else if(minas[i][j] >= 8){
-				printf( "* ");
+				printf( " * ");
 			}
 			else{
-				printf("%d ", minas[i][j]);
+				printf(" %d ", minas[i][j]);
 			}
 		}
-		cont++;
+
 		printf("\n");
 	}
 	while(op != 1 && op !=2 && op!=3){
 		if(vitoria != ((M*M)-B)){
-			printf("Pontos: %d - LOSER!\n %d", ponto, vitoria );
+			printf("Pontos: %d - LOSER!\n", ponto);
 			vitoria = 0;
 		}
 		if(vitoria == ((M*M)-B)){
@@ -162,40 +225,83 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 	int i, j, p=0, x, y, cont=0;
 	int verifica[M][M];
 	int pontuacao=0;
-	printf("  ");
+	int zero = 0;
+	if (categoria == 1){
+		printf("\nCategoria %d - Easy\n", categoria);
+	} else if (categoria == 2){
+		printf("\nCategoria %d - Medium\n", categoria);
+	} else if(categoria == 3){
+		printf("\nCategoria %d - Hard\n", categoria);
+	} else{
+		printf("\nCategoria ??? - Hiper Hard (You are crazy...)\n");
+	}
+	printf("   ");
 	for(i=0; i<M; i++){
-		printf("%d ", cont);
-		cont++;
+		if (cont < 10){
+			printf("%d%d ", zero, cont);
+			cont++;
+		} else {
+			printf("%d ", cont);
+			cont++;
+		}
+
 	}
 	printf("\n");
 	cont=0;
 	for(i=0 ; i<M; i++){
-		printf("%d ", cont);
+		if (cont < 10){
+			printf("%d%d ", zero, cont);
+			cont++;
+		} else {
+			printf("%d ", cont);
+			cont++;
+		}
 		for(j=0; j<M; j++){
-			printf( "%c ", campo[i][j]);
+			printf( " %c ", campo[i][j]);
 			verifica[i][j] = 0;
 		}
-		cont++;
+
 		printf("\n");
 	}
 	while((p != -1)){
 		cont=0;
-		printf("Vitoria = %d\nPontos: %d - ", vitoria, pontuacao);
+		printf("\n\nPontos: %d - ", pontuacao);
 		printf("Informe a jogada: ");
 		scanf("%d %d", &x, &y);
 		if ((x>(M-1) || x<0) || (y>(M-1) || y<0)){
 			system("clear");
 			printf("\nJogada inválida!\n\n");
-			printf("  ");
+			if (categoria == 1){
+				printf("\nCategoria %d - Easy\n", categoria);
+			} else if (categoria == 2){
+				printf("\nCategoria %d - Medium\n", categoria);
+			} else if(categoria == 3){
+				printf("\nCategoria %d - Hard\n", categoria);
+			} else{
+				printf("\nCategoria ??? - Hiper Hard (You are crazy...)\n");
+			}
+			printf("   ");
 			for(i=0; i<M; i++){
-				printf("%d ", cont);
-				cont++;
+				if (cont < 10){
+					printf("%d%d ", zero, cont);
+					cont++;
+				} else {
+					printf("%d ", cont);
+					cont++;
+				}
+
 			}
 
 			printf("\n");
 			cont=0;
 			for(i=0 ; i<M; i++){
-				printf("%d ", cont);
+				if (cont < 10){
+					printf("%d%d ", zero, cont);
+					cont++;
+				} else {
+					printf("%d ", cont);
+					cont++;
+				}
 				for(j=0; j<M; j++){
 					if(i==x && j==y){
 						if(minas[i][j]>=8){
@@ -217,20 +323,21 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 					 }
 
 						if(campo[i][j] == '0'){
-							printf("%c ", campo[i][j]);
+							printf(" %c ", campo[i][j]);
 						}
 						else if(campo[i][j] == '*'){
-							printf( "%c ", campo[i][j]);
+							printf( " %c ", campo[i][j]);
 						}
 						else if(campo[i][j] >= '#'){
-							printf( "# ");
+							printf(" ");
+							printf("# ");
 						}
 						else{
-							printf("%d ", campo[i][j]);
+							printf(" %d ", campo[i][j]);
 						}
 				}
 				printf("\n");
-				cont++;
+
 			}
 
 		}
@@ -246,15 +353,36 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 						}
 						system("clear");
 						printf("\nJogada já realizada!\n\n");
-						printf("  ");
+						if (categoria == 1){
+							printf("\nCategoria %d - Easy\n", categoria);
+						} else if (categoria == 2){
+							printf("\nCategoria %d - Medium\n", categoria);
+						} else if(categoria == 3){
+							printf("\nCategoria %d - Hard\n", categoria);
+						} else{
+							printf("\nCategoria ??? - Hiper Hard (You are crazy...)\n");
+						}
+						printf("   ");
 						for(i=0; i<M; i++){
-							printf("%d ", cont);
-							cont++;
+							if (cont < 10){
+								printf("%d%d ", zero, cont);
+								cont++;
+							} else {
+								printf("%d ", cont);
+								cont++;
+							}
+
 						}
 						printf("\n");
 						cont=0;
 						for(i=0 ; i<M; i++){
-							printf("%d ", cont);
+							if (cont < 10){
+								printf("%d%d ", zero, cont);
+								cont++;
+							} else {
+								printf("%d ", cont);
+								cont++;
+							}
 							for(j=0; j<M; j++){
 								if(i==x && j==y){
 									if(minas[i][j]>=8){
@@ -276,36 +404,57 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 								 }
 
 									if(campo[i][j] == '0'){
-										printf("%c ", campo[i][j]);
+										printf(" %c ", campo[i][j]);
 									}
 									else if(campo[i][j] == '*'){
-										printf( "%c ", campo[i][j]);
+										printf( " %c ", campo[i][j]);
 									}
 									else if(campo[i][j] >= '#'){
-										printf( "# ");
+										printf(" ");
+										printf("# ");
 									}
 									else{
-										printf("%d ", campo[i][j]);
+										printf(" %d ", campo[i][j]);
 									}
 							}
 							printf("\n");
-							cont++;
+
 						}
 					}
 					else if (verifica[x][y] != 1){
 
 						system("clear");
-						printf("  ");
+						if (categoria == 1){
+							printf("\nCategoria %d - Easy\n", categoria);
+						} else if (categoria == 2){
+							printf("\nCategoria %d - Medium\n", categoria);
+						} else if(categoria == 3){
+							printf("\nCategoria %d - Hard\n", categoria);
+						} else{
+							printf("\nCategoria ??? - Hiper Hard (You are crazy...)\n");
+						}
+						printf("   ");
 
 						for(i=0; i<M; i++){
-							printf("%d ", cont);
-							cont++;
+							if (cont < 10){
+								printf("%d%d ", zero, cont);
+								cont++;
+							} else {
+								printf("%d ", cont);
+								cont++;
+							}
 						}
 
 						printf("\n");
 						cont=0;
 						for(i=0 ; i<M; i++){
-							printf("%d ", cont);
+							if (cont < 10){
+								printf("%d%d ", zero, cont);
+								cont++;
+							} else {
+								printf("%d ", cont);
+								cont++;
+							}
 							for(j=0; j<M; j++){
 								if(i==x && j==y){
 									if(minas[i][j]>=8){
@@ -327,20 +476,21 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 								 }
 
 									if(campo[i][j] == '0'){
-										printf("%c ", campo[i][j]);
+										printf(" %c ", campo[i][j]);
 									}
 									else if(campo[i][j] == '*'){
-										printf( "%c ", campo[i][j]);
+										printf( " %c ", campo[i][j]);
 									}
 									else if(campo[i][j] >= '#'){
-										printf( "# ");
+										printf(" ");
+										printf("# ");
 									}
 									else{
-										printf("%d ", campo[i][j]);
+										printf(" %d ", campo[i][j]);
 									}
 							}
 							printf("\n");
-							cont++;
+
 
 						}
 					}

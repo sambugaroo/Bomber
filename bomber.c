@@ -1,6 +1,7 @@
 //# -*- coding: UTF-8 -*-
 
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include "funcoesBomber.h"
 
@@ -30,11 +31,11 @@ void jogo(){
 	float porcentMinasHard = 0.40;
 	float porcentMinasHiperHard = 0.70;
 
-	if(dificuldadeJogo < 3){
+	if(dificuldadeJogo <= 3){
 		categoria = 1;
 		B = (M*M)*porcentMinasEasy;
 	}
-	else if(dificuldadeJogo <= 5){
+	else if(dificuldadeJogo <= 6){
 		categoria = 2;
 		B = (M*M)*porcentMinasMedium;
 	}
@@ -100,30 +101,35 @@ void geraM(int minas[M][M]){
 			y=rand() % M;
 		}
 		//**ACHO QUE FALTA FAZER A VERIFICAÇÂO SE A POSIÇÂO DA MINA (x,y) JÁ FOI UTILIZADA**//
+		if (minas[x][y] != 8){
+			minas[x][y]=8; //Posição (x,y) recebe uma mina.
+				// Sequencia de IF's para incrementar as posição em volta da mina.
+				if(x < (M-1)){			// Se a mina estiver fora da borda direita.
+					minas[x+1][y]++;		// Incremente a posição direita à mina.
+					if(y < (M-1))			// Se a mina estiver fora da borda inferior.
+						minas[x+1][y+1]++;		// Incremente a diagonal direita/inferior da mina.
+					if(y != 0)			// Se a mina estiver fora da borda superior.
+						minas[x+1][y-1]++;		// Incremente a diagonal direita/superior da mina.
+				}
 
-		minas[x][y]=8; //Posição (x,y) recebe uma mina.
-			// Sequencia de IF's para incrementar as posição em volta da mina.
-			if(x < (M-1)){			// Se a mina estiver fora da borda direita.
-				minas[x+1][y]++;		// Incremente a posição direita à mina.
+				if(x != 0){			// Se a mina estiver fora da borda esquerda.
+					minas[x-1][y]++;		// Incremete a posição esquerda à mina.
+					if(y < (M-1))			// Se a mina estiver fora da borda inferior.
+						minas[x-1][y+1]++;		// Incremente a diagonal esquerda/inferior da mina.
+					if(y != 0)			// Se a mina estiver fora da borda superior.
+						minas[x-1][y-1]++;		// Incremente a diagonal esqueda/superior da mina.
+				}
+
 				if(y < (M-1))			// Se a mina estiver fora da borda inferior.
-					minas[x+1][y+1]++;		// Incremente a diagonal direita/inferior da mina.
+					minas[x][y+1]++;		// Incrementa a posição a baixo da mina.
+
 				if(y != 0)			// Se a mina estiver fora da borda superior.
-					minas[x+1][y-1]++;		// Incremente a diagonal direita/superior da mina.
-			}
+					minas[x][y-1]++;		// Incrementa a posição a cima da mina.
 
-			if(x != 0){			// Se a mina estiver fora da borda esquerda.
-				minas[x-1][y]++;		// Incremete a posição esquerda à mina.
-				if(y < (M-1))			// Se a mina estiver fora da borda inferior.
-					minas[x-1][y+1]++;		// Incremente a diagonal esquerda/inferior da mina.
-				if(y != 0)			// Se a mina estiver fora da borda superior.
-					minas[x-1][y-1]++;		// Incremente a diagonal esqueda/superior da mina.
-			}
-
-			if(y < (M-1))			// Se a mina estiver fora da borda inferior.
-				minas[x][y+1]++;		// Incrementa a posição a baixo da mina.
-
-			if(y != 0)			// Se a mina estiver fora da borda superior.
-				minas[x][y-1]++;		// Incrementa a posição a cima da mina.
+		}
+		else{
+			i--;
+		}
 	}
 }
 
@@ -136,12 +142,19 @@ void geraRecord(int ponto){
 		printf("Erro na Leitura do Arquivo\n");
 		end();
 	}
+	do{
 	printf("Nick (5 Caracter): ");
-	scanf("%s", nome);				// Lê o nome digitado pelo usuário. Necessidade de verificar
-							// se segue o protocolo de 5 caracteres.
-	fprintf(p, "%s %d\n", nome, ponto);		// Escreve no arquivo: NOMEespaçoPONTUAÇÃO
-	system("clear");
-	main();
+	scanf("%s", nome);				// Lê o nome digitado pelo usuário.
+	if(strlen(nome) == 5){		//Verificação do Nick - Deve conter exatamente 5 caracteres
+		fprintf(p, "%s %d\n", nome, ponto);		// Escreve no arquivo: NOMEespaçoPONTUAÇÃO
+		system("clear");
+		main();
+	}
+	else{
+		printf("Por favor, digite um Nick de 5 caracteres!\n");
+	}
+} while(strlen(nome) != 5);
+
 
 }
 
@@ -547,7 +560,7 @@ int imprimeRecord(){
 		}
 	}
 
-	printf("\tTOP: " ); // Imprimir o jogador com a maior pontuação.
+	printf("\n\tTOP: " ); // Imprimir o jogador com a maior pontuação.
 	for(j=0; j<5; j++){ // For para imprimir o nome.
 		printf("%c", vetor[maior].nome[j]);
 	}

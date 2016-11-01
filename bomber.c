@@ -69,12 +69,12 @@ void jogo(){
 int menuOpcoes(){
 	int opcao;
 	printf(" _______________________________________\n");
-    	printf("|\t\t\t\t\t|\n");
-    	printf("|\tBem vindo ao Bomber!\t\t|\n");
 	printf("|\t\t\t\t\t|\n");
-    	printf("|\tO que deseja fazer? \t\t|\n");
-    	printf("|\t1-Jogar 2-Sair 3-Records\t|\n");
-    	printf("|_______________________________________|\n\n");
+	printf("|\tBem vindo ao Bomber!\t\t|\n");
+	printf("|\t\t\t\t\t|\n");
+	printf("|\tO que deseja fazer? \t\t|\n");
+	printf("|\t1-Jogar 2-Sair 3-Records\t|\n");
+	printf("|_______________________________________|\n\n");
 	do{
 		printf("Informe a Opção: ");
 		scanf("%d", &opcao);
@@ -103,28 +103,28 @@ void geraM(int minas[M][M]){
 		//**ACHO QUE FALTA FAZER A VERIFICAÇÂO SE A POSIÇÂO DA MINA (x,y) JÁ FOI UTILIZADA**//
 		if (minas[x][y] != 8){
 			minas[x][y]=8; //Posição (x,y) recebe uma mina.
-				// Sequencia de IF's para incrementar as posição em volta da mina.
-				if(x < (M-1)){			// Se a mina estiver fora da borda direita.
-					minas[x+1][y]++;		// Incremente a posição direita à mina.
-					if(y < (M-1))			// Se a mina estiver fora da borda inferior.
-						minas[x+1][y+1]++;		// Incremente a diagonal direita/inferior da mina.
-					if(y != 0)			// Se a mina estiver fora da borda superior.
-						minas[x+1][y-1]++;		// Incremente a diagonal direita/superior da mina.
-				}
-
-				if(x != 0){			// Se a mina estiver fora da borda esquerda.
-					minas[x-1][y]++;		// Incremete a posição esquerda à mina.
-					if(y < (M-1))			// Se a mina estiver fora da borda inferior.
-						minas[x-1][y+1]++;		// Incremente a diagonal esquerda/inferior da mina.
-					if(y != 0)			// Se a mina estiver fora da borda superior.
-						minas[x-1][y-1]++;		// Incremente a diagonal esqueda/superior da mina.
-				}
-
+			// Sequencia de IF's para incrementar as posição em volta da mina.
+			if(x < (M-1)){			// Se a mina estiver fora da borda direita.
+				minas[x+1][y]++;		// Incremente a posição direita à mina.
 				if(y < (M-1))			// Se a mina estiver fora da borda inferior.
-					minas[x][y+1]++;		// Incrementa a posição a baixo da mina.
-
+				minas[x+1][y+1]++;		// Incremente a diagonal direita/inferior da mina.
 				if(y != 0)			// Se a mina estiver fora da borda superior.
-					minas[x][y-1]++;		// Incrementa a posição a cima da mina.
+				minas[x+1][y-1]++;		// Incremente a diagonal direita/superior da mina.
+			}
+
+			if(x != 0){			// Se a mina estiver fora da borda esquerda.
+				minas[x-1][y]++;		// Incremete a posição esquerda à mina.
+				if(y < (M-1))			// Se a mina estiver fora da borda inferior.
+				minas[x-1][y+1]++;		// Incremente a diagonal esquerda/inferior da mina.
+				if(y != 0)			// Se a mina estiver fora da borda superior.
+				minas[x-1][y-1]++;		// Incremente a diagonal esqueda/superior da mina.
+			}
+
+			if(y < (M-1))			// Se a mina estiver fora da borda inferior.
+			minas[x][y+1]++;		// Incrementa a posição a baixo da mina.
+
+			if(y != 0)			// Se a mina estiver fora da borda superior.
+			minas[x][y-1]++;		// Incrementa a posição a cima da mina.
 
 		}
 		else{
@@ -137,23 +137,26 @@ void geraRecord(int ponto){
 
 	FILE *p;					// Cria ponteiro para arquivo.
 	char nome[5];					// Cria váriavel para armazenar o nome.
-	p=fopen("record.txt", "a+");			// Abre o arquivo record.txt com append (a) e update (+).
+	//p=fopen("record.txt", "a+");			// Abre o arquivo record.txt com append (a) e update (+).
 	if(p == NULL){					// Se p receber null, houve erro na abertura do arquivo.
 		printf("Erro na Leitura do Arquivo\n");
 		end();
 	}
 	do{
-	printf("Nick (5 Caracter): ");
-	scanf("%s", nome);				// Lê o nome digitado pelo usuário.
-	if(strlen(nome) == 5){		//Verificação do Nick - Deve conter exatamente 5 caracteres
-		fprintf(p, "%s %d\n", nome, ponto);		// Escreve no arquivo: NOMEespaçoPONTUAÇÃO
-		system("clear");
-		main();
-	}
-	else{
-		printf("Por favor, digite um Nick de 5 caracteres!\n");
-	}
-} while(strlen(nome) != 5);
+		p=fopen("record.txt", "a+");			// Abre o arquivo record.txt com append (a) e update (+).
+		printf("Nick (5 Caracteres): ");
+		scanf("%s", nome);				// Lê o nome digitado pelo usuário.
+		if(strlen(nome) == 5){			//Verificação do Nick - Deve conter exatamente 5 caracteres
+			fprintf(p, "%s %d\n", nome, ponto);		// Escreve no arquivo: NOMEespaçoPONTUAÇÃO
+			system("clear");
+			fclose(p); // Fecha o arquivo explicitamente para não haver erros.
+			main();
+		}
+		else{
+			printf("Por favor, digite um Nick de 5 caracteres!\n");
+		}
+	} while(strlen(nome) != 5);
+
 
 
 }
@@ -223,7 +226,7 @@ void  mostraFim(int minas[M][M], int ponto){
 		printf("- ");
 		scanf("%d", &op);
 		if(op != 1 && op != 2 && op != 3)
-			printf("Opção Inválida\n\n");
+		printf("Opção Inválida\n\n");
 	}
 	switch (op) {
 		case 1: geraRecord(ponto); break;
@@ -333,7 +336,88 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 							verifica[i][j] = 1;
 							vitoria++;
 						}
-					 }
+					}
+
+					if(campo[i][j] == '0'){
+						printf(" %c ", campo[i][j]);
+					}
+					else if(campo[i][j] == '*'){
+						printf( " %c ", campo[i][j]);
+					}
+					else if(campo[i][j] >= '#'){
+						printf(" ");
+						printf("# ");
+					}
+					else{
+						printf(" %d ", campo[i][j]);
+					}
+				}
+				printf("\n");
+
+			}
+
+		}
+		else{
+			if (verifica[x][y] == 1) {
+				if (campo[x][y] == '0'){
+					pontuacao -= 1;
+					vitoria -= 1;
+				}
+				if (minas[x][y] != 0){
+					pontuacao -= 2;
+					vitoria -= 1;
+				}
+				system("clear");
+				printf("\nJogada já realizada!\n\n");
+				if (categoria == 1){
+					printf("\nCategoria %d - Easy\n", categoria);
+				} else if (categoria == 2){
+					printf("\nCategoria %d - Medium\n", categoria);
+				} else if(categoria == 3){
+					printf("\nCategoria %d - Hard\n", categoria);
+				} else{
+					printf("\nCategoria ??? - Hiper Hard (You are crazy...)\n");
+				}
+				printf("   ");
+				for(i=0; i<M; i++){
+					if (cont < 10){
+						printf("%d%d ", zero, cont);
+						cont++;
+					} else {
+						printf("%d ", cont);
+						cont++;
+					}
+
+				}
+				printf("\n");
+				cont=0;
+				for(i=0 ; i<M; i++){
+					if (cont < 10){
+						printf("%d%d ", zero, cont);
+						cont++;
+					} else {
+						printf("%d ", cont);
+						cont++;
+					}
+					for(j=0; j<M; j++){
+						if(i==x && j==y){
+							if(minas[i][j]>=8){
+								campo[i][j]='*';
+								p = -1;
+							}
+							else if(minas[i][j] != 0){
+								campo[i][j]=minas[i][j];
+								pontuacao += 2;
+								verifica[i][j] = 1;
+								vitoria++;
+							}
+							else{
+								campo[i][j]='0';
+								pontuacao += 1;
+								verifica[i][j] = 1;
+								vitoria++;
+							}
+						}
 
 						if(campo[i][j] == '0'){
 							printf(" %c ", campo[i][j]);
@@ -348,169 +432,88 @@ void mostraCampo(int minas[M][M], char campo[M][M]){
 						else{
 							printf(" %d ", campo[i][j]);
 						}
-				}
-				printf("\n");
+					}
+					printf("\n");
 
+				}
 			}
+			else if (verifica[x][y] != 1){
 
+				system("clear");
+				if (categoria == 1){
+					printf("\nCategoria %d - Easy\n", categoria);
+				} else if (categoria == 2){
+					printf("\nCategoria %d - Medium\n", categoria);
+				} else if(categoria == 3){
+					printf("\nCategoria %d - Hard\n", categoria);
+				} else{
+					printf("\nCategoria ??? - Hiper Hard (You are crazy...)\n");
+				}
+				printf("   ");
+
+				for(i=0; i<M; i++){
+					if (cont < 10){
+						printf("%d%d ", zero, cont);
+						cont++;
+					} else {
+						printf("%d ", cont);
+						cont++;
+					}
+				}
+
+				printf("\n");
+				cont=0;
+				for(i=0 ; i<M; i++){
+					if (cont < 10){
+						printf("%d%d ", zero, cont);
+						cont++;
+					} else {
+						printf("%d ", cont);
+						cont++;
+					}
+					for(j=0; j<M; j++){
+						if(i==x && j==y){
+							if(minas[i][j]>=8){
+								campo[i][j]='*';
+								p = -1;
+							}
+							else if(minas[i][j] != 0){
+								campo[i][j]=minas[i][j];
+								pontuacao += 2;
+								verifica[i][j] = 1;
+								vitoria++;
+							}
+							else{
+								campo[i][j]='0';
+								pontuacao += 1;
+								verifica[i][j] = 1;
+								vitoria++;
+							}
+						}
+
+						if(campo[i][j] == '0'){
+							printf(" %c ", campo[i][j]);
+						}
+						else if(campo[i][j] == '*'){
+							printf( " %c ", campo[i][j]);
+						}
+						else if(campo[i][j] >= '#'){
+							printf(" ");
+							printf("# ");
+						}
+						else{
+							printf(" %d ", campo[i][j]);
+						}
+					}
+					printf("\n");
+
+
+				}
+			}
 		}
-		else{
-						if (verifica[x][y] == 1) {
-						if (campo[x][y] == '0'){
-							pontuacao -= 1;
-							vitoria -= 1;
-						}
-						if (minas[x][y] != 0){
-							pontuacao -= 2;
-							vitoria -= 1;
-						}
-						system("clear");
-						printf("\nJogada já realizada!\n\n");
-						if (categoria == 1){
-							printf("\nCategoria %d - Easy\n", categoria);
-						} else if (categoria == 2){
-							printf("\nCategoria %d - Medium\n", categoria);
-						} else if(categoria == 3){
-							printf("\nCategoria %d - Hard\n", categoria);
-						} else{
-							printf("\nCategoria ??? - Hiper Hard (You are crazy...)\n");
-						}
-						printf("   ");
-						for(i=0; i<M; i++){
-							if (cont < 10){
-								printf("%d%d ", zero, cont);
-								cont++;
-							} else {
-								printf("%d ", cont);
-								cont++;
-							}
-
-						}
-						printf("\n");
-						cont=0;
-						for(i=0 ; i<M; i++){
-							if (cont < 10){
-								printf("%d%d ", zero, cont);
-								cont++;
-							} else {
-								printf("%d ", cont);
-								cont++;
-							}
-							for(j=0; j<M; j++){
-								if(i==x && j==y){
-									if(minas[i][j]>=8){
-										campo[i][j]='*';
-										p = -1;
-									}
-									else if(minas[i][j] != 0){
-										campo[i][j]=minas[i][j];
-										pontuacao += 2;
-										verifica[i][j] = 1;
-										vitoria++;
-									}
-									else{
-										campo[i][j]='0';
-										pontuacao += 1;
-										verifica[i][j] = 1;
-										vitoria++;
-									}
-								 }
-
-									if(campo[i][j] == '0'){
-										printf(" %c ", campo[i][j]);
-									}
-									else if(campo[i][j] == '*'){
-										printf( " %c ", campo[i][j]);
-									}
-									else if(campo[i][j] >= '#'){
-										printf(" ");
-										printf("# ");
-									}
-									else{
-										printf(" %d ", campo[i][j]);
-									}
-							}
-							printf("\n");
-
-						}
-					}
-					else if (verifica[x][y] != 1){
-
-						system("clear");
-						if (categoria == 1){
-							printf("\nCategoria %d - Easy\n", categoria);
-						} else if (categoria == 2){
-							printf("\nCategoria %d - Medium\n", categoria);
-						} else if(categoria == 3){
-							printf("\nCategoria %d - Hard\n", categoria);
-						} else{
-							printf("\nCategoria ??? - Hiper Hard (You are crazy...)\n");
-						}
-						printf("   ");
-
-						for(i=0; i<M; i++){
-							if (cont < 10){
-								printf("%d%d ", zero, cont);
-								cont++;
-							} else {
-								printf("%d ", cont);
-								cont++;
-							}
-						}
-
-						printf("\n");
-						cont=0;
-						for(i=0 ; i<M; i++){
-							if (cont < 10){
-								printf("%d%d ", zero, cont);
-								cont++;
-							} else {
-								printf("%d ", cont);
-								cont++;
-							}
-							for(j=0; j<M; j++){
-								if(i==x && j==y){
-									if(minas[i][j]>=8){
-										campo[i][j]='*';
-										p = -1;
-									}
-									else if(minas[i][j] != 0){
-										campo[i][j]=minas[i][j];
-										pontuacao += 2;
-										verifica[i][j] = 1;
-										vitoria++;
-									}
-									else{
-										campo[i][j]='0';
-										pontuacao += 1;
-										verifica[i][j] = 1;
-										vitoria++;
-									}
-								 }
-
-									if(campo[i][j] == '0'){
-										printf(" %c ", campo[i][j]);
-									}
-									else if(campo[i][j] == '*'){
-										printf( " %c ", campo[i][j]);
-									}
-									else if(campo[i][j] >= '#'){
-										printf(" ");
-										printf("# ");
-									}
-									else{
-										printf(" %d ", campo[i][j]);
-									}
-							}
-							printf("\n");
-
-
-						}
-					}
-				}
-				if (vitoria == ((M*M)-B)){
-					p = -1;
-				}
+		if (vitoria == ((M*M)-B)){
+			p = -1;
+		}
 
 
 	}
@@ -581,20 +584,20 @@ int imprimeRecord(){
 
 	int op=0;
 
-		printf("\n");
-		printf(" _______________________\n");
-		printf("|\t1 - Menu\t|\n"  );
-		printf("|\t2 - Sair\t|\n"  );
-		printf("|_______________________|\n");
+	printf("\n");
+	printf(" _______________________\n");
+	printf("|\t1 - Menu\t|\n"  );
+	printf("|\t2 - Sair\t|\n"  );
+	printf("|_______________________|\n");
 
-		do{
-			printf("Informe a Opção: ");
-			scanf("%d", &op);
-			switch (op) {
-				case 1: system("clear"); main();  return op; break;
-				case 2: system("clear"); exit(0); return op; break;
-				default: printf("\nPor favor, selecione uma opção válida\n"); break;
-			}
+	do{
+		printf("Informe a Opção: ");
+		scanf("%d", &op);
+		switch (op) {
+			case 1: system("clear"); main();  return op; break;
+			case 2: system("clear"); exit(0); return op; break;
+			default: printf("\nPor favor, selecione uma opção válida\n"); break;
+		}
 
-		} while(op != 1 || op != 2);
+	} while(op != 1 || op != 2);
 }
